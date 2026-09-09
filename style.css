@@ -458,15 +458,6 @@ footer {
 }
 
 @media (max-width: 640px) {
-  .header-container {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  nav ul {
-    gap: 1.1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
   .hero-card {
     text-align: left;
     padding: 2rem 1.5rem;
@@ -531,7 +522,6 @@ footer {
   margin: 0 auto;
 }
 
-/* Program Detail Specifics */
 .program-detail-card {
   display: flex;
   flex-direction: column;
@@ -564,9 +554,396 @@ footer {
   cursor: pointer;
 }
 
-/* Optional hover effect for the skills */
 .skills-list li:hover {
-  background: rgba(38, 201, 24, 0.15); /* Tinted with your green variable */
+  background: rgba(38, 201, 24, 0.15); 
   border-color: var(--green);
   transform: translateY(-2px);
+}
+
+.timeline-section{
+  padding-bottom: 5rem;
+}
+.timeline-container {
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+.timeline-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 20px;
+    width: 2px;
+    background: var(--glass-border-top);
+}
+
+.timeline-item {
+    position: relative;
+    padding-left: 60px;
+    margin-bottom: 3rem;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: 12px;
+    top: 24px;
+    width: 18px;
+    height: 18px;
+    background: var(--green);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(38, 201, 24, 0.5);
+    z-index: 2;
+}
+
+.timeline-card {
+    padding: 2rem;
+    transition: transform 0.3s ease;
+}
+
+.timeline-card:hover {
+    transform: translateX(10px);
+}
+
+.task-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.task-day {
+    font-weight: 700;
+    color: var(--green);
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+}
+
+.difficulty {
+    font-size: 0.85rem;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 600;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--glass-border);
+}
+
+.tasks-intro{
+  padding: 5rem 0 3rem;
+}
+
+.beginner { color: #4ade80; border-color: #4ade80; }
+.beginner-int { color: #fbbf24; border-color: #fbbf24; }
+.intermediate { color: #f97316; border-color: #f97316; }
+.intermediate-adv { color: #fb7185; border-color: #fb7185; }
+.advanced { color: #ef4444; border-color: #ef4444; }
+
+nav a.active {
+  color: var(--green);
+}
+
+@media (min-width: 768px) {
+    .timeline-container::before {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .timeline-item {
+        width: 50%;
+        padding-left: 0;
+        padding-right: 40px;
+        margin-bottom: 4rem;
+    }
+    
+    .timeline-item:nth-child(even) {
+        margin-left: auto;
+        padding-right: 0;
+        padding-left: 40px;
+    }
+    
+    .timeline-dot {
+        left: auto;
+        right: -9px;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-dot {
+        right: auto;
+        left: -9px;
+    }
+}
+
+.nav-toggle,
+.filter-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.nav-toggle-label {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.nav-toggle-label span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin: 0 auto;
+  background: var(--ink);
+  border-radius: 2px;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.nav-toggle:focus-visible ~ .nav-toggle-label {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .header-container {
+    flex-wrap: wrap;
+  }
+
+  .nav-toggle-label {
+    display: flex;
+    order: 2;
+  }
+
+  nav[aria-label="Primary"] {
+    order: 3;
+    flex-basis: 100%;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  nav[aria-label="Primary"] ul {
+    flex-direction: column;
+    gap: 0;
+    padding-top: 0.75rem;
+  }
+
+  nav[aria-label="Primary"] li {
+    border-top: 1px solid var(--glass-border);
+  }
+
+  nav[aria-label="Primary"] a {
+    display: block;
+    padding: 0.85rem 0.25rem;
+  }
+
+
+  .nav-toggle:checked ~ nav[aria-label="Primary"] {
+    max-height: 320px;
+  }
+
+
+  .nav-toggle:checked ~ .nav-toggle-label span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+  .nav-toggle:checked ~ .nav-toggle-label span:nth-child(2) {
+    opacity: 0;
+  }
+  .nav-toggle:checked ~ .nav-toggle-label span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+}
+
+
+.progress-widget {
+  margin: 2rem auto 0;
+  max-width: 640px;
+  padding: 1.5rem clamp(1.25rem, 4vw, 2rem);
+  text-align: left;
+}
+
+.progress-widget-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.progress-count {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.progress-percent {
+  font-family: var(--font-display);
+  color: var(--green);
+  font-weight: 700;
+}
+
+.progress-track {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 1.25rem;
+}
+
+.progress-segment {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.progress-segment.done {
+  background: var(--green);
+}
+
+.progress-segment.current {
+  background: linear-gradient(90deg, var(--green) 50%, rgba(255, 255, 255, 0.1) 50%);
+}
+
+.progress-continue {
+  display: inline-block;
+  padding: 0.6rem 1.25rem;
+  font-size: 0.9rem;
+}
+
+.status-tag {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 0.25rem 0.7rem;
+  border-radius: 20px;
+  margin-bottom: 0.75rem;
+}
+
+.status-completed {
+  color: #4ade80;
+  background: rgba(74, 222, 128, 0.12);
+}
+
+.status-current {
+  color: var(--green);
+  background: rgba(var(--green-rgb), 0.16);
+}
+
+.status-upcoming {
+  color: var(--ink-muted);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.timeline-item[data-status="upcoming"] .timeline-dot {
+  background: transparent;
+  border: 2px solid var(--glass-border-top);
+  box-shadow: none;
+}
+
+.timeline-item[data-status="current"] .timeline-dot {
+  box-shadow: 0 0 0 6px rgba(var(--green-rgb), 0.18), 0 0 10px rgba(38, 201, 24, 0.6);
+}
+
+.filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 2.5rem auto 0;
+}
+
+.filter-bar-label {
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  margin-right: 0.25rem;
+}
+
+.filter-pill {
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.45rem 1rem;
+  border-radius: 20px;
+  border: 1px solid var(--glass-border);
+  color: var(--ink-muted);
+  transition: all 0.2s ease;
+}
+
+.filter-pill:hover {
+  border-color: var(--green);
+  color: var(--ink);
+}
+
+#filter-all:checked ~ .filter-bar label[for="filter-all"],
+#filter-completed:checked ~ .filter-bar label[for="filter-completed"],
+#filter-current:checked ~ .filter-bar label[for="filter-current"],
+#filter-upcoming:checked ~ .filter-bar label[for="filter-upcoming"] {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--navy);
+}
+
+#filter-completed:checked ~ .timeline-section .timeline-item:not([data-status="completed"]),
+#filter-current:checked ~ .timeline-section .timeline-item:not([data-status="current"]),
+#filter-upcoming:checked ~ .timeline-section .timeline-item:not([data-status="upcoming"]) {
+  display: none;
+}
+
+.task-details {
+  margin-top: 1.25rem;
+  border-top: 1px solid var(--glass-border);
+  padding-top: 1rem;
+}
+
+.task-details summary {
+  cursor: pointer;
+  list-style: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--green);
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.task-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.task-details summary::after {
+  content: "+";
+  font-size: 1.1rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
+
+.task-details[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.task-details-body {
+  padding-top: 0.9rem;
+}
+
+.task-details-body p {
+  font-size: 0.95rem;
+  margin-bottom: 0.75rem;
+}
+
+.timeline-item:target .timeline-card {
+  border-color: var(--green);
+  box-shadow: 0 0 0 2px rgba(var(--green-rgb), 0.35), 0 8px 32px rgba(0, 0, 0, 0.25);
 }

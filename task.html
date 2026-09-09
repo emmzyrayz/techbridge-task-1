@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechBridge | Internship Tasks</title>
+    <meta
+      name="description"
+      content="The TechBridge 30-day internship journey — 8 practical tasks from beginner to advanced, building toward a complete platform."
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com" >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="skip-link" href="#journey">Skip to content</a>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo hover-card" aria-label="TechBridge home">
+                <img src="assets/logo.png" alt="TechBridge" class="logo-img">
+            </a>
+
+            <input type="checkbox" id="nav-toggle" class="nav-toggle">
+
+            <nav aria-label="Primary">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="programs.html">Programs</a></li>
+                    <li><a href="task.html" class="active">Internship Tasks</a></li>
+                </ul>
+            </nav>
+
+            <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation menu">
+                <span></span><span></span><span></span>
+            </label>
+        </div>
+    </header>
+
+    <main>
+        <section class="tasks-intro text-center" id="journey">
+            <div class="container">
+                <h1>Your 30-Day Journey</h1>
+                <p class="section-lede">TechBridge provides a structured 30-day practical internship. You will progressively develop your web development skills by completing practical projects, advancing from beginner to advanced work.</p>
+
+                <div class="progress-widget glass-card hover-card">
+                    <div class="progress-widget-top">
+                        <span class="progress-count">2 of 8 tasks completed</span>
+                        <span class="progress-percent">25%</span>
+                    </div>
+                    <div class="progress-track" role="img" aria-label="2 of 8 tasks completed">
+                        <span class="progress-segment done"></span>
+                        <span class="progress-segment done"></span>
+                        <span class="progress-segment current"></span>
+                        <span class="progress-segment"></span>
+                        <span class="progress-segment"></span>
+                        <span class="progress-segment"></span>
+                        <span class="progress-segment"></span>
+                        <span class="progress-segment"></span>
+                    </div>
+                    <a href="#task-3" class="btn btn-glass progress-continue">Continue: Day 8 &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <input type="radio" name="task-filter" id="filter-all" class="filter-input" checked>
+        <input type="radio" name="task-filter" id="filter-completed" class="filter-input">
+        <input type="radio" name="task-filter" id="filter-current" class="filter-input">
+        <input type="radio" name="task-filter" id="filter-upcoming" class="filter-input">
+
+        <div class="filter-bar container">
+            <span class="filter-bar-label">Show:</span>
+            <label for="filter-all" class="filter-pill">All tasks</label>
+            <label for="filter-completed" class="filter-pill">Completed</label>
+            <label for="filter-current" class="filter-pill">In progress</label>
+            <label for="filter-upcoming" class="filter-pill">Upcoming</label>
+        </div>
+
+        <section class="timeline-section">
+            <div class="container timeline-container">
+                <div class="timeline-item" id="task-1" data-status="completed">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card timeline-card">
+                        <div class="task-header">
+                            <span class="task-day">Day 1</span>
+                            <span class="difficulty beginner">Beginner</span>
+                        </div>
+                        <span class="status-tag status-completed">&check; Completed</span>
+                        <h2>Task 1: Build the TechBridge Homepage</h2>
+                        <p>Create the first version of the TechBridge website using HTML and CSS.</p>
+                        <details class="task-details">
+                            <summary>View task details</summary>
+                            <div class="task-details-body">
+                                <p>Laid the foundation for the whole platform: the shared header, hero, and footer that every later task builds on.</p>
+                                <ul class="skills-list">
+                                    <li>HTML</li>
+                                    <li>CSS</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="timeline-item" id="task-2" data-status="completed">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card timeline-card">
+                        <div class="task-header">
+                            <span class="task-day">Day 4</span>
+                            <span class="difficulty beginner-int">Beginner &rarr; Intermediate</span>
+                        </div>
+                        <span class="status-tag status-completed">&check; Completed</span>
+                        <h2>Task 2: Build the TechBridge Programs Experience</h2>
+                        <p>Create a Programs experience that presents TechBridge's available learning programs.</p>
+                        <details class="task-details">
+                            <summary>View task details</summary>
+                            <div class="task-details-body">
+                                <p>Introduced a second page connected to the homepage, and the card/skills-list patterns reused throughout the rest of the site.</p>
+                                <ul class="skills-list">
+                                    <li>HTML</li>
+                                    <li>CSS</li>
+                                    <li>Building web projects</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="timeline-item" id="task-3" data-status="current">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card timeline-card">
+                        <div class="task-header">
+                            <span class="task-day">Day 8</span>
+                            <span class="difficulty beginner-int">Beginner &rarr; Intermediate</span>
+                        </div>
+                        <span class="status-tag status-current">In progress</span>
+                        <h2>Task 3: Build the Internship Tasks Experience</h2>
+                        <p>Create an interface that presents the TechBridge internship tasks and helps users understand the internship journey.</p>
+                        <details class="task-details" open>
+                            <summary>View task details</summary>
+                            <div class="task-details-body">
+                                <p>This page. Presents all 8 tasks, the day-by-day sequence, and how difficulty ramps up over the internship.</p>
+                                <ul class="skills-list">
+                                    <li>HTML</li>
+                                    <li>CSS</li>
+                                    <li>Building web projects</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="timeline-item" id="task-4" data-status="upcoming">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card timeline-card">
+                        <div class="task-header">
+                            <span class="task-day">Day 11</span>
+                            <span class="difficulty intermediate">Intermediate</span>
+                        </div>
+                        <span class="status-tag status-upcoming">Upcoming</span>
+                        <h2>Task 4: Build an Interactive Task Tracker</h2>
+                        <p>Use JavaScript to make the internship task experience interactive and allow progress to be tracked.</p>
+                        <details class="task-details">
+                            <summary>View task details</summary>
+                            <div class="task-details-body">
+                                <p>First JavaScript task &mdash; turns this static page into something that can track and save real progress.</p>
+                                <ul class="skills-list">
+                                    <li>JavaScript</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="timeline-item" id="task-5" data-status="upcoming">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card timeline-card">
+                        <div class="task-header">
+                            <span class="task-day">Day 15</span>
+                            <span class="difficulty intermediate">Intermediate</span>
+                        </div>
+                        <span class="status-tag status-upcoming">Upcoming</span>
+                        <h2>Task 5: Build the Intern Registration Experience</h2>
+                        <p>Create a professional registration/onboarding interface for TechBridge interns.</p>
+                        <details class="task-details">
+                            <summary>View task details</summary>
+                            <div class="task-details-body">
+                                <p>Focused on forms and onboarding flow &mdash; the first real data-entry surface on the platform.</p>
+                                <ul class="skills-list">
+                                    <li>HTML</li>
+                                    <li>CSS</li>
+                                    <li>JavaScript</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="timeline-item" id="task-6" data-status="upcoming">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card timeline-card">
+                        <div class="task-header">
+                            <span class="task-day">Day 19</span>
+                            <span class="difficulty intermediate-adv">Intermediate &rarr; Advanced</span>
+                        </div>
+                        <span class="status-tag status-upcoming">Upcoming</span>
+                        <h2>Task 6: Build the Task Submission System</h2>
+                        <p>Create an interface through which interns can prepare and submit their task work.</p>
+                        <details class="task-details">
+                            <summary>View task details</summary>
+                            <div class="task-details-body">
+                                <p>Handles the intern-facing side of submitting work &mdash; builds on the forms work from Task 5.</p>
+                                <ul class="skills-list">
+                                    <li>HTML</li>
+                                    <li>CSS</li>
+                                    <li>JavaScript</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+
+                <div class="timeline-item" id="task-7" data-status="upcoming">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card timeline-card">
+                        <div class="task-header">
+                            <span class="task-day">Day 22</span>
+                            <span class="difficulty intermediate-adv">Intermediate &rarr; Advanced</span>
+                        </div>
+                        <span class="status-tag status-upcoming">Upcoming</span>
+                        <h2>Task 7: Build the Intern Dashboard</h2>
+                        <p>Create a dashboard where an intern can view their profile, progress, tasks, and submissions.</p>
+                        <details class="task-details">
+                            <summary>View task details</summary>
+                            <div class="task-details-body">
+                                <p>Pulls everything built so far &mdash; profile, progress, tasks, submissions &mdash; into one view.</p>
+                                <ul class="skills-list">
+                                    <li>HTML</li>
+                                    <li>CSS</li>
+                                    <li>JavaScript</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+                <div class="timeline-item" id="task-8" data-status="upcoming">
+                    <div class="timeline-dot"></div>
+                    <div class="glass-card timeline-card">
+                        <div class="task-header">
+                            <span class="task-day">Day 26</span>
+                            <span class="difficulty advanced">Advanced</span>
+                        </div>
+                        <span class="status-tag status-upcoming">Upcoming</span>
+                        <h2>Task 8: Build the Complete TechBridge Internship Platform</h2>
+                        <p>Combine the different components created during the internship into a complete TechBridge platform.</p>
+                        <details class="task-details">
+                            <summary>View task details</summary>
+                            <div class="task-details-body">
+                                <p>The capstone &mdash; integrates every earlier task into one finished platform.</p>
+                                <ul class="skills-list">
+                                    <li>Git/GitHub</li>
+                                    <li>Building web projects</li>
+                                </ul>
+                            </div>
+                        </details>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+      <div class="container footer-inner">
+        <div>
+          <strong>TechBridge</strong>
+          <p>A project by Baselink Services Limited</p>
+        </div>
+        <div>
+          <p>
+            Contact:
+            <a href="mailto:techbridgebaslink@gmail.com"
+              >techbridgebaslink@gmail.com</a
+            >
+          </p>
+        </div>
+      </div>
+    </footer>
+</body>
+</html>
