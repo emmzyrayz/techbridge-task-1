@@ -65,6 +65,10 @@ section[id] {
   margin: 0 auto;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .skip-link {
   position: absolute;
   left: -999px;
@@ -118,6 +122,8 @@ p {
 .section-lede {
   color: var(--ink-muted);
   margin-bottom: 2.5rem;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .glass-card {
@@ -486,6 +492,12 @@ footer {
   nav a {
     transition: none;
   }
+  .timeline-card {
+    transition: none;
+  }
+  .timeline-card::after {
+    display: none;
+  }
 }
 
 @keyframes flyInUp {
@@ -555,7 +567,7 @@ footer {
 }
 
 .skills-list li:hover {
-  background: rgba(38, 201, 24, 0.15); 
+  background: rgba(38, 201, 24, 0.15);
   border-color: var(--green);
   transform: translateY(-2px);
 }
@@ -575,7 +587,7 @@ footer {
     position: absolute;
     top: 0;
     bottom: 0;
-    left: 20px;
+    left: 20px; 
     width: 2px;
     background: var(--glass-border-top);
 }
@@ -600,11 +612,39 @@ footer {
 
 .timeline-card {
     padding: 2rem;
-    transition: transform 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    --tilt-x: 0deg;
+    --tilt-y: 0deg;
+    --glow-x: 50%;
+    --glow-y: 50%;
+    transform: perspective(900px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateZ(0);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+    will-change: transform;
 }
 
-.timeline-card:hover {
-    transform: translateX(10px);
+.timeline-card.is-tilting {
+    transition: box-shadow 0.4s ease;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.08);
+}
+
+.timeline-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(
+        circle at var(--glow-x) var(--glow-y),
+        rgba(255, 255, 255, 0.14),
+        transparent 45%
+    );
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.timeline-card.is-tilting::after {
+    opacity: 1;
 }
 
 .task-header {
@@ -748,12 +788,12 @@ nav a.active {
     padding: 0.85rem 0.25rem;
   }
 
-
+  /* The actual toggle: general-sibling combinator, no JS needed */
   .nav-toggle:checked ~ nav[aria-label="Primary"] {
     max-height: 320px;
   }
 
-
+  /* Animate the hamburger into an "X" when open */
   .nav-toggle:checked ~ .nav-toggle-label span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
   }
@@ -764,7 +804,6 @@ nav a.active {
     transform: translateY(-7px) rotate(-45deg);
   }
 }
-
 
 .progress-widget {
   margin: 2rem auto 0;
@@ -861,6 +900,7 @@ nav a.active {
   align-items: center;
   gap: 0.6rem;
   margin: 2.5rem auto 0;
+  margin-bottom: 30px;
 }
 
 .filter-bar-label {
@@ -946,4 +986,25 @@ nav a.active {
 .timeline-item:target .timeline-card {
   border-color: var(--green);
   box-shadow: 0 0 0 2px rgba(var(--green-rgb), 0.35), 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.track-selector-section{
+  padding: 2rem 0;
+
+  .track-controls{
+    display: inline-flex; 
+    gap: 1rem; 
+    padding: 1rem 2rem; 
+    border-radius: 50px;
+  }
+
+  h2{
+    margin-top: 2rem; 
+    font-size: 1.2rem; 
+    color: var(--ink-muted);
+
+    strong{
+      color: var(--green);
+    }
+  }
 }
