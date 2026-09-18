@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechBridge | Challenge Hub</title>
+    <meta name="description" content="Explore practical challenges designed to help TechBridge interns apply their skills and gain real-world experience.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="skip-link" href="#challenge-hub">Skip to content</a>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo hover-card" aria-label="TechBridge home">
+                <img src="assets/logo.png" alt="TechBridge" class="logo-img" id="theme-logo">
+            </a>
+
+            <input type="checkbox" id="nav-toggle" class="nav-toggle">
+
+            <nav aria-label="Primary">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="programs.html">Programs</a></li>
+                    <li><a href="task.html">Internship</a></li>
+                    <li><a href="challenge.html" class="active">Challenges</a></li>
+                    <li>
+                        <button type="button" id="theme-toggle" class="btn-theme" aria-label="Toggle Dark/Light Mode">
+                            <span class="theme-icon light-icon">☀️</span>
+                            <span class="theme-icon dark-icon">🌙</span>
+                        </button>
+                    </li>
+                </ul>
+            </nav>
+
+            <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation menu">
+                <span></span><span></span><span></span>
+            </label>
+        </div>
+    </header>
+
+    <main id="challenge-hub">
+        <section class="tasks-intro text-center">
+            <div class="container">
+                <h1>Challenge Hub</h1>
+                <p class="section-lede">Explore practical challenges designed to help you apply your skills and gain real-world experience. Choose a track, pick a difficulty, and start building.</p>
+                <div class="progress-widget glass-card hover-card">
+                    <div class="progress-widget-top">
+                        <span class="progress-count">Challenges Attempted</span>
+                        <span class="progress-percent" id="progress-text">0 / 6</span>
+                    </div>
+                    <div class="progress-track" id="progress-bar">
+                        <span class="progress-segment"></span>
+                        <span class="progress-segment"></span>
+                        <span class="progress-segment"></span>
+                        <span class="progress-segment"></span>
+                        <span class="progress-segment"></span>
+                        <span class="progress-segment"></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="challenge-controls-section">
+            <div class="container">
+                <div class="glass-card toolbar">
+                    <div class="toolbar-group">
+                        <label for="search-input">Search</label>
+                        <input type="text" id="search-input" class="form-control" placeholder="Search challenges...">
+                    </div>
+                    <div class="toolbar-group">
+                        <label for="track-filter">Track</label>
+                        <select id="track-filter" class="form-control">
+                            <option value="All">All Tracks</option>
+                            <option value="Data Analytics">Data Analytics</option>
+                            <option value="Web Development">Web Development</option>
+                        </select>
+                    </div>
+
+                    <div class="toolbar-group">
+                        <label for="diff-filter">Difficulty</label>
+                        <select id="diff-filter" class="form-control">
+                            <option value="All">All Levels</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Intermediate">Intermediate</option>
+                            <option value="Advanced">Advanced</option>
+                        </select>
+                    </div>
+
+                    <div class="toolbar-group">
+                        <label for="sort-filter">Sort by</label>
+                        <select id="sort-filter" class="form-control">
+                            <option value="asc">Difficulty: Low to High</option>
+                            <option value="desc">Difficulty: High to Low</option>
+                        </select>
+                    </div>
+
+                    <div class="toolbar-actions">
+                        <button type="button" id="btn-reset" class="btn btn-glass">Reset Filters</button>
+                    </div>
+                </div>
+                <div class="results-summary">
+                    <p id="results-count">Showing 6 challenges</p>
+                </div>
+
+                <div class="card-grid" id="challenge-grid">
+                </div>
+
+                <div id="no-results" class="no-results hidden">
+                    <div class="glass-card text-center">
+                        <h3>No challenges found</h3>
+                        <p>Try adjusting your search or filters to find what you're looking for.</p>
+                        <button type="button" class="btn btn-accent" id="btn-clear-search">Clear Search</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="challenge-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-card">
+            <button type="button" class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+            <div class="modal-header">
+                <span id="modal-track" class="status-tag">Track</span>
+                <span id="modal-diff" class="difficulty">Difficulty</span>
+            </div>
+            <h2 id="modal-title">Challenge Title</h2>
+            <p id="modal-desc" class="modal-desc">Description goes here.</p>
+            <div class="modal-body-grid">
+                <div>
+                    <h3>Objective</h3>
+                    <p id="modal-objective">Objective text.</p>
+                </div>
+                <div>
+                    <h3>Expected Outcome</h3>
+                    <p id="modal-outcome">Outcome text.</p>
+                </div>
+                <div>
+                    <h3>Required Skills</h3>
+                    <p id="modal-skills">Skills text.</p>
+                </div>
+                <div>
+                    <h3>Tools</h3>
+                    <p id="modal-tools">Tools text.</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-accent" id="btn-simulate-start">Start Challenge</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+      <div class="container footer-inner">
+        <div>
+          <strong>TechBridge</strong>
+          <p>A project by Baselink Services Limited</p>
+        </div>
+        <div>
+          <p>Contact: <a href="mailto:techbridgebaslink@gmail.com">techbridgebaslink@gmail.com</a></p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="challenge.js"></script>
+</body>
+</html>

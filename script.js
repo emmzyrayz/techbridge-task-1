@@ -188,7 +188,7 @@ btnWeb.addEventListener("click", () => switchTrack("web"));
 btnData.addEventListener("click", () => switchTrack("data"));
 
 document.addEventListener("DOMContentLoaded", () => {
-  switchTrack("web"); // Default track
+  switchTrack("web");
 });
 
 timelineContainer.addEventListener("animationend", (event) => {
