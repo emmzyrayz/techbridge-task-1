@@ -586,10 +586,10 @@ footer {
   nav a {
     transition: none;
   }
-  .timeline-card {
+  .tilt-card {
     transition: none;
   }
-  .timeline-card::after {
+  .tilt-card::after {
     display: none;
   }
 }
@@ -706,6 +706,9 @@ footer {
 
 .timeline-card {
   padding: 2rem;
+}
+
+.tilt-card {
   position: relative;
   overflow: hidden;
   --tilt-x: 0deg;
@@ -720,14 +723,14 @@ footer {
   will-change: transform;
 }
 
-.timeline-card.is-tilting {
+.tilt-card.is-tilting {
   transition: box-shadow 0.4s ease;
   box-shadow:
     0 24px 48px rgba(0, 0, 0, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.08);
 }
 
-.timeline-card::after {
+.tilt-card::after {
   content: "";
   position: absolute;
   inset: 0;
@@ -742,7 +745,7 @@ footer {
   border-radius: inherit;
 }
 
-.timeline-card.is-tilting::after {
+.tilt-card.is-tilting::after {
   opacity: 1;
 }
 
@@ -903,6 +906,7 @@ nav a.active {
     display: block;
     padding: 0.85rem 0.25rem;
   }
+
   .nav-toggle:checked ~ nav[aria-label="Primary"] {
     max-height: 320px;
   }

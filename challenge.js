@@ -155,7 +155,7 @@ function renderChallenges() {
       else diffClass = "advanced";
 
       const cardHtml = `
-                <div class="glass-card challenge-card hover-card ${challenge.trackClass}" style="animation-delay: ${index * 0.1}s">
+                <div class="glass-card challenge-card tilt-card hover-card ${challenge.trackClass}" style="animation-delay: ${index * 0.1}s">
                     <span class="challenge-category">${challenge.category}</span>
                     <div class="challenge-header">
                         <span class="status-tag">${challenge.track}</span>
@@ -189,6 +189,8 @@ btnClearSearch.addEventListener("click", () => {
   renderChallenges();
 });
 
+let lastFocusedElement = null;
+
 function openModal(id) {
   const challenge = challengeData.find((c) => c.id === id);
   if (!challenge) return;
@@ -215,15 +217,28 @@ function openModal(id) {
 
   modal.classList.remove("hidden");
   modal.classList.add("active");
+
+  lastFocusedElement = document.activeElement;
+  modalClose.focus();
 }
 
 function closeModal() {
   modal.classList.remove("active");
+  if (lastFocusedElement) {
+    lastFocusedElement.focus();
+    lastFocusedElement = null;
+  }
 }
 
 modalClose.addEventListener("click", closeModal);
 modal.addEventListener("click", (e) => {
   if (e.target === modal) closeModal();
+});
+
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && modal.classList.contains("active")) {
+    closeModal();
+  }
 });
 
 btnStart.addEventListener("click", () => {
