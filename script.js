@@ -33,19 +33,19 @@ const internshipData = {
       title: "Build the Intern Registration Experience",
       desc: "Create a professional registration and onboarding interface for TechBridge interns.",
       diff: "Intermediate",
-      status: "current",
+      status: "completed",
     },
     {
       day: 19,
-      title: "Build the Task Submission System",
-      desc: "Create an interface through which interns can prepare and submit their task work.",
+      title: "Build the Intern Dashboard",
+      desc: "Create a dashboard where an intern can view their profile, progress, tasks and submissions.",
       diff: "Intermediate",
-      status: "upcoming",
+      status: "current",
     },
     {
       day: 22,
-      title: "Build the Intern Dashboard",
-      desc: "Create a dashboard where an intern can view their profile, progress, tasks and submissions.",
+      title: "Build the Task Submission System",
+      desc: "Create an interface through which interns can prepare and submit their task work.",
       diff: "Intermediate",
       status: "upcoming",
     },
@@ -91,14 +91,14 @@ const internshipData = {
       title: "SQL Joins & Aggregations",
       desc: "Use JOIN, GROUP BY and aggregate functions such as COUNT, SUM and AVG to analyze information across multiple tables.",
       diff: "Intermediate",
-      status: "current",
+      status: "completed",
     },
     {
       day: 19,
       title: "Lookup Functions & Data Wrangling",
       desc: "Use VLOOKUP or XLOOKUP to combine related datasets and handle data mismatches.",
       diff: "Intermediate",
-      status: "upcoming",
+      status: "current",
     },
     {
       day: 22,
@@ -121,6 +121,49 @@ const timelineContainer = document.getElementById("timeline-container");
 const currentTrackLabel = document.getElementById("current-track-name");
 const btnWeb = document.getElementById("btn-web");
 const btnData = document.getElementById("btn-data");
+
+const progressCountEl = document.getElementById("progress-count");
+const progressPercentEl = document.getElementById("progress-percent");
+const progressTrackEl = document.getElementById("progress-track");
+const progressContinueEl = document.getElementById("progress-continue");
+
+function renderProgressWidget(trackKey) {
+  const tasks = internshipData[trackKey];
+  const total = tasks.length;
+  const completed = tasks.filter((t) => t.status === "completed").length;
+  const percent = Math.round((completed / total) * 100);
+
+  progressCountEl.textContent = `${completed} of ${total} tasks completed`;
+  progressPercentEl.textContent = `${percent}%`;
+
+  progressTrackEl.innerHTML = "";
+  tasks.forEach((task) => {
+    const segment = document.createElement("span");
+    segment.className = "progress-segment";
+    if (task.status === "completed") segment.classList.add("done");
+    else if (task.status === "current") segment.classList.add("current");
+    progressTrackEl.appendChild(segment);
+  });
+  progressTrackEl.setAttribute(
+    "aria-label",
+    `${completed} of ${total} tasks completed`,
+  );
+
+  const currentIndex = tasks.findIndex((t) => t.status === "current");
+  if (currentIndex === -1) {
+    if (completed === total) {
+      progressContinueEl.classList.add("hidden");
+    } else {
+      progressContinueEl.classList.remove("hidden");
+      progressContinueEl.href = "#task-1";
+      progressContinueEl.textContent = `Continue: Day ${tasks[0].day} \u2192`;
+    }
+  } else {
+    progressContinueEl.classList.remove("hidden");
+    progressContinueEl.href = `#task-${currentIndex + 1}`;
+    progressContinueEl.textContent = `Continue: Day ${tasks[currentIndex].day} \u2192`;
+  }
+}
 
 function renderTasks(trackKey) {
   timelineContainer.innerHTML = "";
@@ -176,11 +219,13 @@ function switchTrack(track) {
     btnWeb.classList.replace("btn-glass", "btn-accent");
     btnData.classList.replace("btn-accent", "btn-glass");
     renderTasks("web");
+    renderProgressWidget("web");
   } else {
     currentTrackLabel.innerText = "Data Analytics";
     btnData.classList.replace("btn-glass", "btn-accent");
     btnWeb.classList.replace("btn-accent", "btn-glass");
     renderTasks("data");
+    renderProgressWidget("data");
   }
 }
 
