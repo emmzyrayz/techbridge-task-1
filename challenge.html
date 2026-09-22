@@ -27,6 +27,7 @@
                     <li><a href="programs.html">Programs</a></li>
                     <li><a href="task.html">Internship</a></li>
                     <li><a href="challenge.html" class="active">Challenges</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
                     <li>
                         <button type="button" id="theme-toggle" class="btn-theme" aria-label="Toggle Dark/Light Mode">
                             <span class="theme-icon light-icon">☀️</span>
@@ -67,10 +68,12 @@
         <section class="challenge-controls-section">
             <div class="container">
                 <div class="glass-card toolbar">
+                    <!-- Optional: Search -->
                     <div class="toolbar-group">
                         <label for="search-input">Search</label>
                         <input type="text" id="search-input" class="form-control" placeholder="Search challenges...">
                     </div>
+                    <!-- Required: Track Filter -->
                     <div class="toolbar-group">
                         <label for="track-filter">Track</label>
                         <select id="track-filter" class="form-control">
@@ -80,6 +83,7 @@
                         </select>
                     </div>
 
+                    <!-- Required: Difficulty Filter -->
                     <div class="toolbar-group">
                         <label for="diff-filter">Difficulty</label>
                         <select id="diff-filter" class="form-control">
@@ -90,6 +94,7 @@
                         </select>
                     </div>
 
+                    <!-- Optional: Sorting -->
                     <div class="toolbar-group">
                         <label for="sort-filter">Sort by</label>
                         <select id="sort-filter" class="form-control">
@@ -98,17 +103,22 @@
                         </select>
                     </div>
 
+                    <!-- Optional: Reset Filters -->
                     <div class="toolbar-actions">
                         <button type="button" id="btn-reset" class="btn btn-glass">Reset Filters</button>
                     </div>
                 </div>
+                <!-- Optional: Number of challenges displayed -->
                 <div class="results-summary">
                     <p id="results-count">Showing 6 challenges</p>
                 </div>
 
+                <!-- Required: Display Challenges -->
                 <div class="card-grid" id="challenge-grid">
+                    <!-- Cards injected via JS -->
                 </div>
 
+                <!-- Optional: No results found message -->
                 <div id="no-results" class="no-results hidden">
                     <div class="glass-card text-center">
                         <h3>No challenges found</h3>
@@ -120,6 +130,7 @@
         </section>
     </main>
 
+    <!-- Required: Modal for Challenge Details (Appears without refresh) -->
     <div id="challenge-modal" class="modal-overlay hidden">
         <div class="modal-content glass-card" role="dialog" aria-modal="true" aria-labelledby="modal-title">
             <button type="button" class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
@@ -165,6 +176,8 @@
       </div>
     </footer>
 
+    <script src="challenge-data.js"></script>
+    <script src="progress.js"></script>
     <script src="challenge.js"></script>
     <script src="interactions.js"></script>
 </body>

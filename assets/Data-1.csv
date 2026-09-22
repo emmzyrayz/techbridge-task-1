@@ -1,0 +1,16 @@
+customer_id,tenure_months,monthly_charges,contract_type,support_calls,churned
+C1001,2,89.50,Month-to-month,4,Yes
+C1002,34,56.20,Two year,0,No
+C1003,8,74.10,Month-to-month,3,Yes
+C1004,58,45.00,Two year,1,No
+C1005,3,95.30,Month-to-month,5,Yes
+C1006,21,62.75,One year,1,No
+C1007,1,88.90,Month-to-month,6,Yes
+C1008,47,50.40,Two year,0,No
+C1009,12,79.20,Month-to-month,3,Yes
+C1010,29,58.10,One year,2,No
+C1011,6,91.00,Month-to-month,4,Yes
+C1012,63,42.30,Two year,0,No
+C1013,15,72.60,Month-to-month,2,No
+C1014,4,86.40,Month-to-month,5,Yes
+C1015,38,55.90,One year,1,No

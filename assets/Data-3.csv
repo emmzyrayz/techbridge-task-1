@@ -1,0 +1,13 @@
+date,product,region,units_sold,revenue
+2026-01-05,Wireless Mouse,North,120,3600.00
+2026-01-05,Wireless Mouse,South,95,2850.00
+2026-01-12,Keyboard,North,80,3200.00
+2026-01-12,Keyboard,South,64,2560.00
+2026-01-19,Monitor,North,40,8000.00
+2026-01-19,Monitor,South,35,7000.00
+2026-01-26,Wireless Mouse,North,140,4200.00
+2026-01-26,Wireless Mouse,South,110,3300.00
+2026-02-02,Keyboard,North,90,3600.00
+2026-02-02,Keyboard,South,70,2800.00
+2026-02-09,Monitor,North,55,11000.00
+2026-02-09,Monitor,South,42,8400.00

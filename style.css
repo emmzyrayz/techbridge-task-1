@@ -246,6 +246,13 @@ p {
     background 0.25s ease;
 }
 
+.btn:disabled {
+  opacity: 0.55;
+  cursor: default;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
 .btn-accent {
   background: var(--green);
   color: var(--navy);
@@ -708,6 +715,12 @@ footer {
   padding: 2rem;
 }
 
+/* Reusable 3D pointer-tilt effect — apply alongside .glass-card wherever
+   you want it, not just on the internship timeline. Avoid it on cards that
+   contain native form controls (like the challenge toolbar's <select>
+   elements) since tilting an ancestor of a <select> can throw off where
+   the browser anchors its dropdown. Also skip very large/full-width cards
+   (hero, CTA) where an 8° tilt reads as gimmicky rather than premium. */
 .tilt-card {
   position: relative;
   overflow: hidden;
@@ -907,10 +920,12 @@ nav a.active {
     padding: 0.85rem 0.25rem;
   }
 
+  /* The actual toggle: general-sibling combinator, no JS needed */
   .nav-toggle:checked ~ nav[aria-label="Primary"] {
     max-height: 320px;
   }
 
+  /* Animate the hamburger into an "X" when open */
   .nav-toggle:checked ~ .nav-toggle-label span:nth-child(1) {
     transform: translateY(7px) rotate(45deg);
   }
@@ -1308,5 +1323,300 @@ nav a.active {
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+/* =========================================================
+   Workspace page (workspace.html) — the live challenge
+   environment reached from the Challenge Hub's "Start
+   Challenge" button.
+   ========================================================= */
+
+.workspace-main {
+  padding: 3rem 0 5rem;
+}
+
+.workspace-header {
+  width: 90%;
+  max-width: 1140px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.workspace-header h1 {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin: 0;
+}
+
+/* Recaps the challenge's track/difficulty/description so visitors don't
+   lose context after leaving the modal behind on the previous page. */
+.workspace-context {
+  width: 90%;
+  max-width: 1140px;
+  margin: 0 auto 2rem;
+  padding: 1.75rem clamp(1.25rem, 4vw, 2.5rem);
+}
+
+.workspace-context .task-header {
+  margin-bottom: 1rem;
+}
+
+.workspace-context p {
+  max-width: none;
+}
+
+.workspace-grid {
+  width: 90%;
+  max-width: 1140px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: stretch;
+}
+
+.editor-pane {
+  display: flex;
+  flex-direction: column;
+  min-height: 420px;
+}
+
+.editor-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.editor-tab-btn {
+  padding: 0.5rem 1.15rem;
+  font-size: 0.85rem;
+}
+
+.code-editor-pane {
+  flex: 1;
+  width: 100%;
+  min-height: 420px;
+  resize: vertical;
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--ink);
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  padding: 1.25rem;
+}
+
+.code-editor-pane:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+#live-preview {
+  width: 100%;
+  min-height: 420px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  background: #ffffff;
+}
+
+.data-upload-zone {
+  grid-column: 1 / -1;
+  padding: 3rem clamp(1.5rem, 5vw, 3rem);
+}
+
+.data-upload-zone .form-control {
+  max-width: 360px;
+  margin: 1.5rem auto 0;
+}
+
+.upload-filename {
+  margin-top: 0.75rem;
+  color: var(--green);
+  font-size: 0.9rem;
+}
+
+.submit-feedback {
+  width: 90%;
+  max-width: 1140px;
+  margin: 1.5rem auto 0;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+}
+
+.submit-feedback.success {
+  border-color: rgba(74, 222, 128, 0.4);
+  color: #4ade80;
+}
+
+.submit-feedback.error {
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+}
+
+@media (max-width: 780px) {
+  .workspace-grid {
+    grid-template-columns: 1fr;
+  }
+  .editor-pane,
+  .code-editor-pane,
+  #live-preview {
+    min-height: 280px;
+  }
+}
+
+/* =========================================================
+   Dashboard page (dashboard.html)
+   ========================================================= */
+
+.dashboard-main {
+  padding: 3rem 0 2rem;
+}
+
+.dashboard-section {
+  padding: 0 0 3rem;
+}
+
+.dashboard-section h2 {
+  margin-bottom: 0.5rem;
+}
+
+/* Welcome section */
+.welcome-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2.25rem clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.welcome-card h1 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  margin-bottom: 0.35rem;
+}
+
+.welcome-track {
+  color: var(--green);
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+}
+
+.welcome-message {
+  max-width: 46ch;
+  margin: 0;
+}
+
+/* Progress section extras (widget itself reuses .progress-widget etc.) */
+.progress-remaining {
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+  margin: 0;
+}
+
+/* Filter bar (plain buttons — this task requires JS anyway, so no need
+   for the CSS-only radio trick used on the Challenge Hub) */
+.filter-bar-plain {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2rem;
+}
+
+.filter-pill-btn {
+  padding: 0.5rem 1.1rem;
+  font-size: 0.85rem;
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  color: var(--ink-muted);
+}
+
+.filter-pill-btn.active {
+  background: var(--green);
+  border-color: var(--green);
+  color: var(--navy);
+}
+
+.filter-pill-btn:not(.active):hover {
+  border-color: var(--green);
+  color: var(--ink);
+}
+
+/* Task tracker cards */
+.task-tracker-grid {
+  min-height: 120px;
+}
+
+.task-tracker-card {
+  padding: 2rem;
+}
+
+.task-tracker-card h3 {
+  margin: 0.25rem 0 0.6rem;
+}
+
+.task-tracker-card p {
+  font-size: 0.95rem;
+  margin-bottom: 1.25rem;
+}
+
+.no-tasks-message {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--ink-muted);
+  padding: 2rem 0;
+}
+
+/* Challenge Hub preview */
+.challenge-preview-card {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 2rem clamp(1.5rem, 4vw, 2.5rem);
+}
+
+.challenge-preview-card h2 {
+  margin-bottom: 0.35rem;
+}
+
+.challenge-preview-card p {
+  margin: 0;
+}
+
+/* Technology Explorer */
+.tech-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.tech-panel {
+  padding: 2rem clamp(1.5rem, 4vw, 2.5rem);
+  min-height: 160px;
+}
+
+.tech-panel h3 {
+  color: var(--green);
+}
+
+.tech-panel p {
+  max-width: none;
+  margin: 0;
+}
+
+@media (max-width: 640px) {
+  .welcome-card,
+  .challenge-preview-card {
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
   }
 }

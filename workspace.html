@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechBridge | Internship Workspace Environment</title>
+    <meta
+      name="description"
+      content="The TechBridge 30-day internship journey — 8 practical tasks from beginner to advanced, building toward a complete platform."
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com" >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="skip-link" href="#journey">Skip to content</a>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo hover-card" aria-label="TechBridge home">
+                <img src="assets/logo.png" alt="TechBridge" class="logo-img">
+            </a>
+
+            <input type="checkbox" id="nav-toggle" class="nav-toggle">
+
+            <nav aria-label="Primary">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="programs.html">Programs</a></li>
+                    <li><a href="task.html">Internship Tasks</a></li>
+                    <li><a href="challenge.html" class="active">Challenges</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </nav>
+
+            <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation menu">
+                <span></span><span></span><span></span>
+            </label>
+        </div>
+    </header>
+
+    <main class="workspace-main">
+    <div class="workspace-header">
+        <h1 id="workspace-title">Loading Challenge...</h1>
+        <button type="button" id="btn-submit" class="btn btn-accent">Submit Solution</button>
+    </div>
+
+    <div class="glass-card workspace-context" id="workspace-context">
+        <div class="task-header">
+            <span id="workspace-track" class="status-tag"></span>
+            <span id="workspace-diff" class="difficulty"></span>
+        </div>
+        <p id="workspace-desc"></p>
+    </div>
+
+    <!-- This container's content will be injected by JS depending on the track -->
+    <div id="workspace-environment" class="workspace-grid"></div>
+
+    <div id="submit-feedback" class="glass-card submit-feedback hidden"></div>
+</main>
+
+    <footer>
+      <div class="container footer-inner">
+        <div>
+          <strong>TechBridge</strong>
+          <p>A project by Baselink Services Limited</p>
+        </div>
+        <div>
+          <p>
+            Contact:
+            <a href="mailto:techbridgebaslink@gmail.com"
+              >techbridgebaslink@gmail.com</a
+            >
+          </p>
+        </div>
+      </div>
+    </footer>
+    <script src="challenge-data.js"></script>
+    <script src="progress.js"></script>
+    <script src="workspace.js"></script>
+    <script src="interactions.js"></script>
+</body>
+</html>

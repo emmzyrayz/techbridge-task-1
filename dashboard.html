@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechBridge | Intern Dashboard</title>
+    <meta
+      name="description"
+      content="The TechBridge intern dashboard — track your 8-task internship progress, mark tasks complete, and explore modern web technologies."
+    >
+    <link rel="preconnect" href="https://fonts.googleapis.com" >
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin >
+    <link
+      href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    >
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <a class="skip-link" href="#dashboard-main">Skip to content</a>
+
+    <header>
+        <div class="container header-container">
+            <a href="index.html" class="logo hover-card" aria-label="TechBridge home">
+                <img src="assets/logo.png" alt="TechBridge" class="logo-img">
+            </a>
+
+            <input type="checkbox" id="nav-toggle" class="nav-toggle">
+
+            <nav aria-label="Primary">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="programs.html">Programs</a></li>
+                    <li><a href="task.html">Internship Tasks</a></li>
+                    <li><a href="challenge.html">Challenges</a></li>
+                    <li><a href="dashboard.html" class="active">Dashboard</a></li>
+                </ul>
+            </nav>
+
+            <label for="nav-toggle" class="nav-toggle-label" aria-label="Toggle navigation menu">
+                <span></span><span></span><span></span>
+            </label>
+        </div>
+    </header>
+
+    <main id="dashboard-main" class="dashboard-main">
+
+        <!-- A. Welcome Section -->
+        <section class="dashboard-section">
+            <div class="container">
+                <div class="glass-card welcome-card hover-card">
+                    <div>
+                        <h1 id="welcome-name">Welcome back, Emmanuel</h1>
+                        <p class="welcome-track">Web Development Intern</p>
+                        <p class="welcome-message">
+                            Every task you complete here is a real piece of the TechBridge
+                            platform &mdash; this dashboard tracks that progress as you go.
+                        </p>
+                    </div>
+                    <span id="welcome-status" class="status-tag status-current">Internship Status: In Progress</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- B. Internship Progress -->
+        <section class="dashboard-section">
+            <div class="container">
+                <div class="glass-card progress-widget hover-card">
+                    <div class="progress-widget-top">
+                        <span class="progress-count" id="progress-count">0 of 8 tasks completed</span>
+                        <span class="progress-percent" id="progress-percent">0%</span>
+                    </div>
+                    <div class="progress-track" id="progress-track" role="img" aria-label="Internship progress"></div>
+                    <p id="progress-remaining" class="progress-remaining">8 tasks remaining</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- C/D/E/F. Task Tracker -->
+        <section class="dashboard-section" id="tracker">
+            <div class="container">
+                <h2>Your 8 Tasks</h2>
+                <p class="section-lede">Mark tasks complete as you finish them &mdash; your progress above updates instantly.</p>
+
+                <div class="filter-bar-plain" role="group" aria-label="Filter tasks by status">
+                    <button type="button" class="btn filter-pill-btn active" data-filter="all">All</button>
+                    <button type="button" class="btn filter-pill-btn" data-filter="completed">Completed</button>
+                    <button type="button" class="btn filter-pill-btn" data-filter="in-progress">In Progress</button>
+                    <button type="button" class="btn filter-pill-btn" data-filter="not-started">Not Started</button>
+                </div>
+
+                <div id="task-grid" class="card-grid task-tracker-grid"></div>
+            </div>
+        </section>
+
+        <!-- H. Connect to Challenge Hub -->
+        <section class="dashboard-section">
+            <div class="container">
+                <div class="glass-card challenge-preview-card hover-card">
+                    <div>
+                        <h2>Challenge Hub</h2>
+                        <p id="challenge-count-text">Loading challenges&hellip;</p>
+                    </div>
+                    <a href="challenge.html" class="btn btn-accent">Explore Challenges</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- I/J. Modern Web Technologies + Technology Explorer -->
+        <section class="dashboard-section" id="tech-explorer">
+            <div class="container">
+                <h2>Modern Web Technologies</h2>
+                <p class="section-lede">Beyond HTML, CSS and JavaScript, here's what powers most production web platforms.</p>
+
+                <div class="tech-tabs" role="group" aria-label="Choose a technology">
+                    <button type="button" class="btn btn-accent tech-tab-btn active" data-tech="nextjs">Next.js</button>
+                    <button type="button" class="btn btn-glass tech-tab-btn" data-tech="vue">Vue.js</button>
+                    <button type="button" class="btn btn-glass tech-tab-btn" data-tech="angular">Angular</button>
+                    <button type="button" class="btn btn-glass tech-tab-btn" data-tech="backend">Backend</button>
+                </div>
+
+                <div class="glass-card tech-panel hover-card" id="tech-panel">
+                    <!-- populated by dashboard.js -->
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- G. View Task Details -->
+    <div id="task-modal" class="modal-overlay hidden">
+        <div class="modal-content glass-card" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+            <button type="button" class="modal-close" id="task-modal-close" aria-label="Close modal">&times;</button>
+            <span id="task-modal-status" class="status-tag">Status</span>
+            <h2 id="task-modal-title">Task Title</h2>
+            <p id="task-modal-desc" class="modal-desc">Description goes here.</p>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-accent" id="task-modal-complete">Mark as Completed</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+      <div class="container footer-inner">
+        <div>
+          <strong>TechBridge</strong>
+          <p>A project by Baselink Services Limited</p>
+        </div>
+        <div>
+          <p>
+            Contact:
+            <a href="mailto:techbridgebaslink@gmail.com"
+              >techbridgebaslink@gmail.com</a
+            >
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <script src="dashboard-data.js"></script>
+    <script src="challenge-data.js"></script>
+    <script src="dashboard.js"></script>
+    <script src="interactions.js"></script>
+</body>
+</html>
