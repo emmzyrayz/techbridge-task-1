@@ -1,33 +1,14 @@
-// ---------- Persistence ----------
-// Only completions are ever written here (a task moving to "completed"),
-// stored as { [taskNumber]: "completed" } and merged over the defaults in
-// dashboard-data.js at render time. This means refreshing the page (or
-// coming back later) doesn't silently lose progress you already marked.
-const DASHBOARD_STORAGE_KEY = "techbridge-dashboard-progress";
+// ---------- API configuration ----------
+// Change this to your deployed Render URL once the backend is hosted;
+// everything else in this file is agnostic to where the API actually lives.
+const API_BASE_URL = "http://localhost:3000";
 
-function getStatusOverrides() {
-  try {
-    const raw = localStorage.getItem(DASHBOARD_STORAGE_KEY);
-    const parsed = raw ? JSON.parse(raw) : {};
-    return typeof parsed === "object" && parsed !== null ? parsed : {};
-  } catch {
-    return {};
-  }
-}
-
-function persistTaskCompleted(number) {
-  const overrides = getStatusOverrides();
-  overrides[number] = "completed";
-  localStorage.setItem(DASHBOARD_STORAGE_KEY, JSON.stringify(overrides));
-}
-
-function getEffectiveTasks() {
-  const overrides = getStatusOverrides();
-  return dashboardTasks.map((task) => ({
-    ...task,
-    status: overrides[task.number] || task.status,
-  }));
-}
+// In-memory cache of whatever the API last returned. This is the only
+// source of truth for task state now — no localStorage fallback, since
+// the whole point of Task 7 is that the server (not the browser) owns
+// this data. Restarting the backend resets progress to tasks.json; that's
+// expected, not a bug.
+let allTasks = [];
 
 // ---------- DOM references ----------
 const taskGrid = document.getElementById("task-grid");
@@ -35,6 +16,7 @@ const progressCount = document.getElementById("progress-count");
 const progressPercent = document.getElementById("progress-percent");
 const progressTrack = document.getElementById("progress-track");
 const progressRemaining = document.getElementById("progress-remaining");
+const backendStatusEl = document.getElementById("backend-status");
 
 const modal = document.getElementById("task-modal");
 const modalClose = document.getElementById("task-modal-close");
@@ -44,7 +26,7 @@ const modalStatus = document.getElementById("task-modal-status");
 const modalCompleteBtn = document.getElementById("task-modal-complete");
 
 let activeFilter = "all";
-let modalTaskNumber = null;
+let modalTaskId = null;
 let lastFocusedElement = null;
 
 // ---------- Status display helpers ----------
@@ -60,12 +42,54 @@ const STATUS_CLASS = {
   "not-started": "status-upcoming",
 };
 
-// ---------- Progress section (B) ----------
+// ---------- Backend status indicator ----------
+function setBackendStatus(connected) {
+  backendStatusEl.textContent = connected
+    ? "Backend Status: Connected"
+    : "Backend Status: Offline";
+  backendStatusEl.classList.toggle("backend-online", connected);
+  backendStatusEl.classList.toggle("backend-offline", !connected);
+}
+
+// ---------- Loading / error states ----------
+function showLoadingState() {
+  taskGrid.innerHTML = `<p class="loading-message">Loading tasks&hellip;</p>`;
+}
+
+function showErrorState() {
+  taskGrid.innerHTML = `
+    <div class="glass-card error-state">
+      <h3>Unable to load tasks</h3>
+      <p>Please check your connection or try again.</p>
+      <button type="button" class="btn btn-accent" id="retry-btn">Try Again</button>
+    </div>
+  `;
+  document.getElementById("retry-btn").addEventListener("click", loadTasks);
+}
+
+// ---------- Fetch tasks from the API ----------
+async function loadTasks() {
+  showLoadingState();
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/tasks`);
+    if (!response.ok) {
+      throw new Error(`Server responded with ${response.status}`);
+    }
+    allTasks = await response.json();
+    setBackendStatus(true);
+    renderTasks();
+  } catch (error) {
+    setBackendStatus(false);
+    showErrorState();
+  }
+}
+
+// ---------- Progress section ----------
 function renderProgress(tasks) {
   const total = tasks.length;
   const completed = tasks.filter((t) => t.status === "completed").length;
   const remaining = total - completed;
-  const percent = Math.round((completed / total) * 100);
+  const percent = total === 0 ? 0 : Math.round((completed / total) * 100);
 
   progressCount.textContent = `${completed} of ${total} tasks completed`;
   progressPercent.textContent = `${percent}%`;
@@ -84,15 +108,14 @@ function renderProgress(tasks) {
   });
 }
 
-// ---------- Task tracker (C/D/E/F) ----------
+// ---------- Task tracker ----------
 function renderTasks() {
-  const tasks = getEffectiveTasks();
-  renderProgress(tasks);
+  renderProgress(allTasks);
 
   const visible =
     activeFilter === "all"
-      ? tasks
-      : tasks.filter((t) => t.status === activeFilter);
+      ? allTasks
+      : allTasks.filter((t) => t.status === activeFilter);
 
   taskGrid.innerHTML = "";
 
@@ -106,9 +129,9 @@ function renderTasks() {
     card.className = "glass-card tilt-card hover-card task-tracker-card";
     card.innerHTML = `
       <span class="status-tag ${STATUS_CLASS[task.status]}">${STATUS_LABEL[task.status]}</span>
-      <h3>Task ${task.number}: ${task.title}</h3>
-      <p>${task.desc}</p>
-      <button type="button" class="btn btn-glass view-task-btn" data-number="${task.number}">View Task</button>
+      <h3>Task ${task.id}: ${task.title}</h3>
+      <p>${task.description}</p>
+      <button type="button" class="btn btn-glass view-task-btn" data-id="${task.id}">View Task</button>
     `;
     taskGrid.appendChild(card);
   });
@@ -126,20 +149,42 @@ document.querySelectorAll(".filter-pill-btn").forEach((btn) => {
   });
 });
 
-// ---------- View Task modal (G) ----------
+// ---------- View Task modal ----------
 taskGrid.addEventListener("click", (event) => {
   const btn = event.target.closest(".view-task-btn");
   if (!btn) return;
-  openTaskModal(parseInt(btn.dataset.number));
+  openTaskModal(parseInt(btn.dataset.id));
 });
 
-function openTaskModal(number) {
-  const task = getEffectiveTasks().find((t) => t.number === number);
-  if (!task) return;
+async function openTaskModal(id) {
+  modalTaskId = id;
+  modal.classList.remove("hidden");
+  modal.classList.add("active");
+  lastFocusedElement = document.activeElement;
 
-  modalTaskNumber = number;
-  modalTitle.textContent = `Task ${task.number}: ${task.title}`;
-  modalDesc.textContent = task.desc;
+  modalTitle.textContent = "Loading\u2026";
+  modalDesc.textContent = "";
+  modalStatus.textContent = "";
+  modalCompleteBtn.disabled = true;
+  modalClose.focus();
+
+  // A real round-trip per the brief (step 16), rather than just reading
+  // the copy already sitting in allTasks from the initial GET /api/tasks.
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/tasks/${id}`);
+    if (!response.ok)
+      throw new Error(`Server responded with ${response.status}`);
+    const task = await response.json();
+    populateModal(task);
+  } catch (error) {
+    modalTitle.textContent = "Couldn't load this task";
+    modalDesc.textContent = "Please check your connection and try again.";
+  }
+}
+
+function populateModal(task) {
+  modalTitle.textContent = `Task ${task.id}: ${task.title}`;
+  modalDesc.textContent = task.description;
   modalStatus.textContent = STATUS_LABEL[task.status];
   modalStatus.className = `status-tag ${STATUS_CLASS[task.status]}`;
 
@@ -150,11 +195,6 @@ function openTaskModal(number) {
     modalCompleteBtn.textContent = "Mark as Completed";
     modalCompleteBtn.disabled = false;
   }
-
-  modal.classList.remove("hidden");
-  modal.classList.add("active");
-  lastFocusedElement = document.activeElement;
-  modalClose.focus();
 }
 
 function closeTaskModal() {
@@ -175,14 +215,37 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-modalCompleteBtn.addEventListener("click", () => {
-  if (modalTaskNumber === null) return;
-  persistTaskCompleted(modalTaskNumber);
-  renderTasks();
-  closeTaskModal();
+modalCompleteBtn.addEventListener("click", async () => {
+  if (modalTaskId === null) return;
+
+  const originalText = modalCompleteBtn.textContent;
+  modalCompleteBtn.disabled = true;
+  modalCompleteBtn.textContent = "Saving\u2026";
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/tasks/${modalTaskId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: "completed" }),
+    });
+    if (!response.ok)
+      throw new Error(`Server responded with ${response.status}`);
+    const updated = await response.json();
+
+    const index = allTasks.findIndex((t) => t.id === updated.id);
+    if (index !== -1) allTasks[index] = updated;
+
+    renderTasks();
+    closeTaskModal();
+  } catch (error) {
+    modalCompleteBtn.disabled = false;
+    modalCompleteBtn.textContent = originalText;
+    modalDesc.textContent =
+      "Couldn't save that change — check your connection and try again.";
+  }
 });
 
-// ---------- Challenge Hub connection (H) ----------
+// ---------- Challenge Hub connection ----------
 function renderChallengeCount() {
   const el = document.getElementById("challenge-count-text");
   if (typeof challengeData === "undefined") {
@@ -192,7 +255,7 @@ function renderChallengeCount() {
   el.textContent = `${challengeData.length} challenges available across Data Analytics and Web Development.`;
 }
 
-// ---------- Technology Explorer (I/J) ----------
+// ---------- Technology Explorer ----------
 const techInfo = {
   nextjs: {
     name: "Next.js",
@@ -208,7 +271,7 @@ const techInfo = {
   },
   backend: {
     name: "Backend Development",
-    body: "Backend development handles everything that happens behind the scenes of a website — servers, databases, authentication, and business logic — while the frontend (what you've been building throughout this internship) handles what the user actually sees and interacts with. The two typically communicate over an API, exchanging data as JSON. Common backend technologies include Node.js with Express.js (JavaScript, runs on the same language as the frontend), Django or Flask (Python), and Laravel (PHP) — each pairing a language with a framework that handles routing, database access, and server logic.",
+    body: "Backend development handles everything that happens behind the scenes of a website — servers, databases, authentication, and business logic — while the frontend (what you've been building throughout this internship) handles what the user actually sees and interacts with. The two typically communicate over an API, exchanging data as JSON — exactly what this dashboard now does with its own Node.js and Express backend. Common backend technologies include Node.js with Express.js (JavaScript, runs on the same language as the frontend), Django or Flask (Python), and Laravel (PHP) — each pairing a language with a framework that handles routing, database access, and server logic.",
   },
 };
 
@@ -232,7 +295,7 @@ document.querySelectorAll(".tech-tab-btn").forEach((btn) => {
 
 // ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
-  renderTasks();
+  loadTasks();
   renderChallengeCount();
   renderTechPanel("nextjs");
 });
