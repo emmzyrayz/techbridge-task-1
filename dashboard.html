@@ -15,6 +15,7 @@
       rel="stylesheet"
     >
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard-extras.css">
 </head>
 <body>
     <a class="skip-link" href="#dashboard-main">Skip to content</a>
@@ -74,6 +75,7 @@
                     <p id="progress-remaining" class="progress-remaining">8 tasks remaining</p>
                 </div>
                 <p id="backend-status" class="backend-status">Backend Status: Checking&hellip;</p>
+                <div id="dashboard-stats" class="stats-row"></div>
             </div>
         </section>
 
@@ -88,6 +90,21 @@
                     <button type="button" class="btn filter-pill-btn" data-filter="completed">Completed</button>
                     <button type="button" class="btn filter-pill-btn" data-filter="in-progress">In Progress</button>
                     <button type="button" class="btn filter-pill-btn" data-filter="not-started">Not Started</button>
+                </div>
+
+                <div class="task-toolbar">
+                    <input
+                      type="search"
+                      id="task-search"
+                      class="task-search-input"
+                      placeholder="Search tasks by title or description…"
+                      aria-label="Search tasks"
+                    >
+                    <button type="button" id="btn-add-task" class="btn btn-glass">+ Add Task</button>
+                </div>
+
+                <div id="search-empty-state" class="empty-state hidden">
+                    <p>No tasks match your search.</p>
                 </div>
 
                 <div id="task-grid" class="card-grid task-tracker-grid"></div>
@@ -141,6 +158,26 @@
         </div>
     </div>
 
+    <!-- Add Task (Task 7 optional challenge 1) — reuses the .modal-overlay
+         styles from the View Task modal above. -->
+    <div id="add-task-modal" class="modal-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="add-task-title">
+        <div class="modal-content glass-card">
+            <button type="button" id="add-task-close" class="modal-close" aria-label="Close">&times;</button>
+            <h2 id="add-task-title">Add a New Task</h2>
+            <form id="add-task-form">
+                <label for="new-task-title">Title</label>
+                <input type="text" id="new-task-title" name="title" required maxlength="120">
+
+                <label for="new-task-description">Description</label>
+                <textarea id="new-task-description" name="description" required maxlength="500" rows="3"></textarea>
+
+                <p id="add-task-error" class="error-state hidden"></p>
+
+                <button type="submit" id="add-task-submit" class="btn btn-accent">Add Task</button>
+            </form>
+        </div>
+    </div>
+
     <footer>
       <div class="container footer-inner">
         <div>
@@ -160,6 +197,7 @@
 
     <script src="challenge-data.js"></script>
     <script src="dashboard.js"></script>
+    <script src="dashboard-extras.js"></script>
     <script src="interactions.js"></script>
 </body>
 </html>

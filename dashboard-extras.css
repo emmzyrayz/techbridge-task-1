@@ -1,0 +1,203 @@
+/* dashboard-extras.css — Task 7 optional challenges (Option 5 + support
+   styles for Options 1–3). Link this after style.css so it can rely on
+   the existing --glass-fill / --glass-border / --glass-blur / --glass-radius
+   custom properties already defined there. */
+
+/* ---------- Stats row ---------- */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+  margin: 1.25rem 0;
+}
+
+.stat-tile {
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  border-radius: var(--glass-radius);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.stat-number {
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.stat-label {
+  margin-top: 0.35rem;
+  font-size: 0.8rem;
+  opacity: 0.75;
+}
+
+.stat-completed .stat-number { color: #4ade80; }
+.stat-progress .stat-number { color: #facc15; }
+.stat-pending .stat-number { color: #94a3b8; }
+
+/* ---------- Search + toolbar ---------- */
+.task-toolbar {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin: 1rem 0;
+  flex-wrap: wrap;
+}
+
+.task-search-input {
+  flex: 1;
+  min-width: 200px;
+  padding: 0.6rem 1rem;
+  border-radius: var(--glass-radius);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--glass-blur));
+  color: inherit;
+  font-size: 0.95rem;
+}
+
+.task-search-input:focus {
+  outline: 2px solid #4ade80;
+  outline-offset: 1px;
+}
+
+/* ---------- Empty state ---------- */
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  opacity: 0.75;
+}
+
+.empty-state.hidden {
+  display: none;
+}
+
+/* ---------- Delete button ---------- */
+.btn-delete-task {
+  background: transparent;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  color: #ef4444;
+  border-radius: var(--glass-radius);
+  padding: 0.4rem 0.9rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.15s ease;
+  margin-left: 0.5rem;
+}
+
+.btn-delete-task:hover {
+  background: rgba(239, 68, 68, 0.12);
+  transform: translateY(-1px);
+}
+
+/* ---------- Toasts ---------- */
+#toast-container {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  z-index: 1000;
+}
+
+.toast {
+  min-width: 220px;
+  max-width: 320px;
+  padding: 0.75rem 1rem;
+  border-radius: var(--glass-radius);
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transform: translateX(20px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  font-size: 0.9rem;
+}
+
+.toast-visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.toast-success { border-left: 3px solid #4ade80; }
+.toast-error { border-left: 3px solid #ef4444; }
+.toast-info { border-left: 3px solid #60a5fa; }
+
+/* ---------- Add Task modal reuses .modal/.modal-content/.active from
+   the existing task-detail modal styles; only form-specific rules here ---------- */
+#add-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+#add-task-form label {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-top: 0.5rem;
+}
+
+#add-task-form input,
+#add-task-form textarea {
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--glass-radius);
+  border: 1px solid var(--glass-border);
+  background: var(--glass-fill);
+  color: inherit;
+  font-family: inherit;
+  resize: vertical;
+}
+
+#add-task-submit {
+  margin-top: 0.75rem;
+}
+
+/* .error-state in style.css is sized for the full task-grid error card;
+   shrink it for the inline form message. */
+#add-task-error {
+  padding: 0;
+  margin: 0.25rem 0 0;
+  max-width: none;
+  text-align: left;
+  color: #ef4444;
+  font-size: 0.85rem;
+}
+
+/* ---------- Mobile improvements ---------- */
+@media (max-width: 640px) {
+  .stats-row {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .task-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #btn-add-task {
+    width: 100%;
+  }
+
+  #toast-container {
+    left: 1rem;
+    right: 1rem;
+    bottom: 1rem;
+  }
+
+  .toast {
+    max-width: none;
+  }
+}

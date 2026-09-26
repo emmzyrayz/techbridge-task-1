@@ -1,16 +1,8 @@
-// ---------- API configuration ----------
-// Change this to your deployed Render URL once the backend is hosted;
-// everything else in this file is agnostic to where the API actually lives.
 const API_BASE_URL = "https://techbridge-task-1-ixzh.onrender.com";
 
-// In-memory cache of whatever the API last returned. This is the only
-// source of truth for task state now — no localStorage fallback, since
-// the whole point of Task 7 is that the server (not the browser) owns
-// this data. Restarting the backend resets progress to tasks.json; that's
-// expected, not a bug.
+
 let allTasks = [];
 
-// ---------- DOM references ----------
 const taskGrid = document.getElementById("task-grid");
 const progressCount = document.getElementById("progress-count");
 const progressPercent = document.getElementById("progress-percent");
@@ -26,10 +18,13 @@ const modalStatus = document.getElementById("task-modal-status");
 const modalCompleteBtn = document.getElementById("task-modal-complete");
 
 let activeFilter = "all";
+// Set of task ids matching the current search (set by dashboard-extras.js),
+// or null when no search is active. Kept separate from allTasks so the
+// progress widget and stats always reflect the full task list.
+let searchMatchIds = null;
 let modalTaskId = null;
 let lastFocusedElement = null;
 
-// ---------- Status display helpers ----------
 const STATUS_LABEL = {
   completed: "Completed",
   "in-progress": "In Progress",
@@ -42,7 +37,17 @@ const STATUS_CLASS = {
   "not-started": "status-upcoming",
 };
 
-// ---------- Backend status indicator ----------
+// Task titles/descriptions are user-supplied now (POST /api/tasks), so
+// escape them before they go into innerHTML.
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 function setBackendStatus(connected) {
   backendStatusEl.textContent = connected
     ? "Backend Status: Connected"
@@ -78,6 +83,7 @@ async function loadTasks() {
     allTasks = await response.json();
     setBackendStatus(true);
     renderTasks();
+    if (typeof renderStats === "function") renderStats(allTasks);
   } catch (error) {
     setBackendStatus(false);
     showErrorState();
@@ -112,26 +118,40 @@ function renderProgress(tasks) {
 function renderTasks() {
   renderProgress(allTasks);
 
+  const searched = searchMatchIds
+    ? allTasks.filter((t) => searchMatchIds.has(t.id))
+    : allTasks;
   const visible =
     activeFilter === "all"
-      ? allTasks
-      : allTasks.filter((t) => t.status === activeFilter);
+      ? searched
+      : searched.filter((t) => t.status === activeFilter);
 
   taskGrid.innerHTML = "";
 
   if (visible.length === 0) {
-    taskGrid.innerHTML = `<p class="no-tasks-message">No tasks match this filter.</p>`;
+    // An empty search has its own #search-empty-state message.
+    if (!(searchMatchIds && searched.length === 0)) {
+      taskGrid.innerHTML = `<p class="no-tasks-message">No tasks match this filter.</p>`;
+    }
     return;
   }
 
   visible.forEach((task) => {
+    const title = escapeHtml(task.title);
     const card = document.createElement("div");
     card.className = "glass-card tilt-card hover-card task-tracker-card";
     card.innerHTML = `
       <span class="status-tag ${STATUS_CLASS[task.status]}">${STATUS_LABEL[task.status]}</span>
-      <h3>Task ${task.id}: ${task.title}</h3>
-      <p>${task.description}</p>
+      <h3>Task ${task.id}: ${title}</h3>
+      <p>${escapeHtml(task.description)}</p>
       <button type="button" class="btn btn-glass view-task-btn" data-id="${task.id}">View Task</button>
+      <button
+        type="button"
+        class="btn-delete-task"
+        data-task-id="${task.id}"
+        data-task-title="${title}"
+        aria-label="Delete ${title}"
+      >Delete</button>
     `;
     taskGrid.appendChild(card);
   });
