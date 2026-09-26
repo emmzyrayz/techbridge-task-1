@@ -1,7 +1,7 @@
 // ---------- API configuration ----------
 // Change this to your deployed Render URL once the backend is hosted;
 // everything else in this file is agnostic to where the API actually lives.
-const API_BASE_URL = "http://localhost:3000";
+const API_BASE_URL = "https://techbridge-task-1-ixzh.onrender.com";
 
 // In-memory cache of whatever the API last returned. This is the only
 // source of truth for task state now — no localStorage fallback, since
