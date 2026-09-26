@@ -23,15 +23,20 @@ async function init() {
   }
 }
 
+// Escape regex metacharacters so user input is matched literally (and a
+// stray "(" can't throw or trigger catastrophic backtracking).
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
 async function getAll(search) {
   if (!search) return Task.find().sort({ id: 1 }).lean();
-  // Escape regex metacharacters so user input is matched literally (and a
-  // stray "(" can't throw or trigger catastrophic backtracking).
-  const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  const regex = new RegExp(escaped, "i");
-  return Task.find({ $or: [{ title: regex }, { description: regex }] })
-    .sort({ id: 1 })
-    .lean();
+  const term = search.toLowerCase().trim();
+  const idMatch = term.match(/^#?task\s*(\d+)$/) || term.match(/^#?(\d+)$/);
+  const regex = new RegExp(escapeRegex(term), "i");
+  const orClauses = [{ title: regex }, { description: regex }];
+  if (idMatch) orClauses.push({ id: Number(idMatch[1]) });
+  return Task.find({ $or: orClauses }).sort({ id: 1 }).lean();
 }
 
 async function getById(id) {

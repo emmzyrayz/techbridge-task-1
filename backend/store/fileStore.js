@@ -28,12 +28,15 @@ async function init() {
 
 async function getAll(search) {
   if (!search) return tasks;
-  const term = search.toLowerCase();
-  return tasks.filter(
-    (t) =>
+  const term = search.toLowerCase().trim();
+  const idMatch = term.match(/^#?task\s*(\d+)$/) || term.match(/^#?(\d+)$/);
+  return tasks.filter((t) => {
+    if (idMatch && t.id === Number(idMatch[1])) return true;
+    return (
       t.title.toLowerCase().includes(term) ||
-      t.description.toLowerCase().includes(term),
-  );
+      t.description.toLowerCase().includes(term)
+    );
+  });
 }
 
 async function getById(id) {
