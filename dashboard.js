@@ -1,6 +1,5 @@
 const API_BASE_URL = "https://techbridge-task-1-ixzh.onrender.com";
 
-
 let allTasks = [];
 
 const taskGrid = document.getElementById("task-grid");
@@ -18,9 +17,7 @@ const modalStatus = document.getElementById("task-modal-status");
 const modalCompleteBtn = document.getElementById("task-modal-complete");
 
 let activeFilter = "all";
-// Set of task ids matching the current search (set by dashboard-extras.js),
-// or null when no search is active. Kept separate from allTasks so the
-// progress widget and stats always reflect the full task list.
+
 let searchMatchIds = null;
 let modalTaskId = null;
 let lastFocusedElement = null;
@@ -37,8 +34,6 @@ const STATUS_CLASS = {
   "not-started": "status-upcoming",
 };
 
-// Task titles/descriptions are user-supplied now (POST /api/tasks), so
-// escape them before they go into innerHTML.
 function escapeHtml(value) {
   return String(value)
     .replace(/&/g, "&amp;")
@@ -56,7 +51,6 @@ function setBackendStatus(connected) {
   backendStatusEl.classList.toggle("backend-offline", !connected);
 }
 
-// ---------- Loading / error states ----------
 function showLoadingState() {
   taskGrid.innerHTML = `<p class="loading-message">Loading tasks&hellip;</p>`;
 }
@@ -72,7 +66,6 @@ function showErrorState() {
   document.getElementById("retry-btn").addEventListener("click", loadTasks);
 }
 
-// ---------- Fetch tasks from the API ----------
 async function loadTasks() {
   showLoadingState();
   try {
@@ -90,7 +83,6 @@ async function loadTasks() {
   }
 }
 
-// ---------- Progress section ----------
 function renderProgress(tasks) {
   const total = tasks.length;
   const completed = tasks.filter((t) => t.status === "completed").length;
@@ -114,7 +106,6 @@ function renderProgress(tasks) {
   });
 }
 
-// ---------- Task tracker ----------
 function renderTasks() {
   renderProgress(allTasks);
 
@@ -129,7 +120,6 @@ function renderTasks() {
   taskGrid.innerHTML = "";
 
   if (visible.length === 0) {
-    // An empty search has its own #search-empty-state message.
     if (!(searchMatchIds && searched.length === 0)) {
       taskGrid.innerHTML = `<p class="no-tasks-message">No tasks match this filter.</p>`;
     }
@@ -157,7 +147,6 @@ function renderTasks() {
   });
 }
 
-// ---------- Filters ----------
 document.querySelectorAll(".filter-pill-btn").forEach((btn) => {
   btn.addEventListener("click", () => {
     document
@@ -169,7 +158,6 @@ document.querySelectorAll(".filter-pill-btn").forEach((btn) => {
   });
 });
 
-// ---------- View Task modal ----------
 taskGrid.addEventListener("click", (event) => {
   const btn = event.target.closest(".view-task-btn");
   if (!btn) return;
@@ -188,8 +176,6 @@ async function openTaskModal(id) {
   modalCompleteBtn.disabled = true;
   modalClose.focus();
 
-  // A real round-trip per the brief (step 16), rather than just reading
-  // the copy already sitting in allTasks from the initial GET /api/tasks.
   try {
     const response = await fetch(`${API_BASE_URL}/api/tasks/${id}`);
     if (!response.ok)
@@ -265,7 +251,6 @@ modalCompleteBtn.addEventListener("click", async () => {
   }
 });
 
-// ---------- Challenge Hub connection ----------
 function renderChallengeCount() {
   const el = document.getElementById("challenge-count-text");
   if (typeof challengeData === "undefined") {
@@ -275,7 +260,6 @@ function renderChallengeCount() {
   el.textContent = `${challengeData.length} challenges available across Data Analytics and Web Development.`;
 }
 
-// ---------- Technology Explorer ----------
 const techInfo = {
   nextjs: {
     name: "Next.js",
@@ -313,7 +297,6 @@ document.querySelectorAll(".tech-tab-btn").forEach((btn) => {
   });
 });
 
-// ---------- Init ----------
 document.addEventListener("DOMContentLoaded", () => {
   loadTasks();
   renderChallengeCount();

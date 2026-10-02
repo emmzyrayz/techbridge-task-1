@@ -46,10 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   if (challenge.track === "Web Development") {
-    // CodePen-style split editor: HTML/CSS/JS each keep their own content
-    // in a separate <textarea> (all three exist at once, just hidden/shown
-    // via tabs), and the preview always recombines whichever is currently
-    // in all three — not just whichever tab happens to be open.
     environment.innerHTML = `
             <div class="editor-pane">
                 <div class="editor-tabs" role="tablist">

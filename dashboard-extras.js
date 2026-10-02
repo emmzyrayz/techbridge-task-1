@@ -1,20 +1,3 @@
-// dashboard-extras.js — Task 7 optional challenges 1, 2, 3, 5
-// (POST/add task, DELETE/remove task, search, and UI polish).
-//
-// This is written as a separate, additive script rather than folded
-// directly into dashboard.js, so it can be dropped in without touching
-// working code. It expects the following globals to already exist from
-// dashboard.js — adjust the names below if the real file differs:
-//   - API_BASE_URL      (string, the API origin)
-//   - allTasks          (array, the currently-loaded task list)
-//   - renderTasks()      (function, re-renders the task grid from allTasks)
-//   - searchMatchIds     (Set of ids matching the active search, or null)
-//
-// Include this AFTER dashboard.js on dashboard.html:
-//   <script src="dashboard.js"></script>
-//   <script src="dashboard-extras.js"></script>
-
-// ---------- Toast notifications ----------
 function showToast(message, type = "info") {
   let container = document.getElementById("toast-container");
   if (!container) {
@@ -29,8 +12,6 @@ function showToast(message, type = "info") {
   toast.textContent = message;
   container.appendChild(toast);
 
-  // Force a reflow so the enter animation actually plays instead of the
-  // element appearing already in its end state.
   void toast.offsetWidth;
   toast.classList.add("toast-visible");
 
@@ -42,7 +23,6 @@ function showToast(message, type = "info") {
   }, 3200);
 }
 
-// ---------- Dashboard statistics (Option 5) ----------
 function renderStats(tasks) {
   const statsEl = document.getElementById("dashboard-stats");
   if (!statsEl) return;
@@ -72,7 +52,6 @@ function renderStats(tasks) {
   `;
 }
 
-// ---------- Search (Option 3) ----------
 let searchDebounceTimer = null;
 
 async function handleSearchInput(event) {
@@ -88,9 +67,6 @@ async function handleSearchInput(event) {
       if (!res.ok) throw new Error("Search request failed");
       const results = await res.json();
 
-      // Only narrow what the grid shows — allTasks stays the full list so
-      // the progress widget, stats, add and delete aren't working off a
-      // filtered subset.
       searchMatchIds = term ? new Set(results.map((t) => t.id)) : null;
       renderTasks();
 
@@ -106,7 +82,6 @@ async function handleSearchInput(event) {
   }, 300);
 }
 
-// ---------- Add Task (Option 1) ----------
 function openAddTaskModal() {
   const modal = document.getElementById("add-task-modal");
   if (!modal) return;
@@ -159,7 +134,6 @@ async function handleAddTaskSubmit(event) {
 
     const newTask = await res.json();
     allTasks.push(newTask);
-    // Keep the just-added task visible even if a search is active.
     if (searchMatchIds) searchMatchIds.add(newTask.id);
     document.getElementById("search-empty-state")?.classList.add("hidden");
     renderTasks();
@@ -178,7 +152,6 @@ async function handleAddTaskSubmit(event) {
   }
 }
 
-// ---------- Delete Task (Option 2) ----------
 async function handleDeleteTask(id, titleForConfirm) {
   const confirmed = window.confirm(`Delete "${titleForConfirm}"? This can't be undone.`);
   if (!confirmed) return;
@@ -201,10 +174,6 @@ async function handleDeleteTask(id, titleForConfirm) {
   }
 }
 
-// Event delegation for the delete buttons rendered inside task cards.
-// Cards are expected to carry data-task-id and a .btn-delete-task button
-// with a data-task-title attribute — see the HTML snippet in the handoff
-// notes for the exact markup to add to the card template in dashboard.js.
 document.addEventListener("click", (event) => {
   const deleteBtn = event.target.closest(".btn-delete-task");
   if (deleteBtn) {
@@ -241,10 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // Render stats once on load, once the initial fetch in dashboard.js has
-  // populated allTasks. dashboard.js's loadTasks() should call
-  // renderStats(allTasks) itself once it fetches — this is just a fallback
-  // in case it's not wired up yet.
   setTimeout(() => {
     if (typeof allTasks !== "undefined" && allTasks.length) {
       renderStats(allTasks);

@@ -19,8 +19,6 @@ app.get("/", (req, res) => {
   });
 });
 
-// GET /api/tasks           -> all tasks
-// GET /api/tasks?search=x  -> tasks whose title/description match "x"
 app.get("/api/tasks", async (req, res) => {
   const tasks = await store.getAll(req.query.search);
   res.json(tasks);
@@ -33,7 +31,6 @@ app.get("/api/tasks/:id", async (req, res) => {
   res.json(task);
 });
 
-// POST /api/tasks  { title, description, status? }  -> Option 1
 app.post("/api/tasks", async (req, res) => {
   const { title, description, status } = req.body;
 
@@ -72,7 +69,6 @@ app.put("/api/tasks/:id", async (req, res) => {
   res.json(task);
 });
 
-// DELETE /api/tasks/:id -> Option 2
 app.delete("/api/tasks/:id", async (req, res) => {
   const id = Number(req.params.id);
   const deleted = await store.remove(id);

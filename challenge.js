@@ -1,5 +1,3 @@
-// challengeData is defined in the shared challenge-data.js,
-// loaded before this file.
 
 const grid = document.getElementById("challenge-grid");
 const searchInput = document.getElementById("search-input");
@@ -114,10 +112,6 @@ function openModal(id) {
   else if (challenge.diffValue === 2) diffClass = "intermediate";
   else diffClass = "advanced";
 
-  // Use the same .track-data/.track-web color system the cards use,
-  // instead of borrowing status-completed/status-current (which both
-  // happen to render green, silently losing the cyan/green track
-  // distinction the cards establish).
   document.querySelector(".modal-header").className =
     `modal-header ${challenge.trackClass}`;
   document.getElementById("modal-track").innerText = challenge.track;
@@ -136,8 +130,6 @@ function openModal(id) {
   modal.classList.remove("hidden");
   modal.classList.add("active");
 
-  // Keyboard/screen-reader users need focus moved into the dialog, and
-  // returned to whatever they were on before, once it closes.
   lastFocusedElement = document.activeElement;
   modalClose.focus();
 }
@@ -166,6 +158,7 @@ btnStart.addEventListener("click", () => {
   markChallengeAttempted(currentChallengeId);
   window.location.href = `workspace.html?id=${currentChallengeId}`;
 });
+
 
 const themeToggle = document.getElementById("theme-toggle");
 const htmlEl = document.documentElement;

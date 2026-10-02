@@ -1,6 +1,4 @@
-// Real persistence, Option 4. Used automatically when MONGODB_URI is set
-// (see server.js) — same method shapes as fileStore.js, so server.js and
-// every route handler is completely unaware of which one is active.
+
 const mongoose = require("mongoose");
 const fs = require("fs");
 const path = require("path");
@@ -12,9 +10,6 @@ async function init() {
   await mongoose.connect(process.env.MONGODB_URI);
   console.log("[store] connected to MongoDB");
 
-  // First run against an empty collection: seed it from the same
-  // tasks.json the file store uses, so switching MONGODB_URI on/off
-  // doesn't change what data you start with.
   const count = await Task.countDocuments();
   if (count === 0) {
     const seed = JSON.parse(fs.readFileSync(SEED_FILE, "utf-8"));
@@ -23,8 +18,6 @@ async function init() {
   }
 }
 
-// Escape regex metacharacters so user input is matched literally (and a
-// stray "(" can't throw or trigger catastrophic backtracking).
 function escapeRegex(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }

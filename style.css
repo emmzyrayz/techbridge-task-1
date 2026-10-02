@@ -1654,6 +1654,12 @@ nav a.active {
 }
 
 @media (max-width: 640px) {
+    .header-container .btn-theme {
+        order: 1;
+        margin-left: auto;
+    }
+}
+@media (max-width: 640px) {
   .welcome-card,
   .challenge-preview-card {
     flex-direction: column;

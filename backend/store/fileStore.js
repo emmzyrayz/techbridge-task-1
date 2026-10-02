@@ -1,10 +1,4 @@
-// Fallback storage used when no MONGODB_URI is configured. This is what
-// Task 7's main (non-optional) requirement used — kept intact so the
-// server still runs with zero external dependencies for local dev or
-// grading. Unlike the original version, mutations are now written back
-// to disk (fs.writeFileSync) so restarting the server no longer reverts
-// changes — small addition, but it's what turns "in-memory" into an
-// actual (if very lightweight) persistence layer.
+
 const fs = require("fs");
 const path = require("path");
 

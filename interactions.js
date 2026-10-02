@@ -67,3 +67,20 @@ if (supportsFineHover && !prefersReducedMotion) {
     }
   });
 }
+// Existing tilt-card and animation code
+
+// Theme toggle logic moved from challenge.js
+const themeToggle = document.getElementById('theme-toggle');
+const htmlEl = document.documentElement;
+
+const savedTheme = localStorage.getItem('techbridge-theme') || 'dark';
+htmlEl.setAttribute('data-theme', savedTheme);
+
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = htmlEl.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        htmlEl.setAttribute('data-theme', newTheme);
+        localStorage.setItem('techbridge-theme', newTheme);
+    });
+}
